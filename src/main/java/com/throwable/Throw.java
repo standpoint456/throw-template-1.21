@@ -3,7 +3,7 @@ package com.throwable;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
-import net.minecraft.world.GameRules;
+import net.minecraft.world.level.GameRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +12,7 @@ public class Throw implements ModInitializer {
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger("throw");
-	public static final GameRules.Key<GameRules.IntRule> FuseTime = GameRuleRegistry
+	public static final GameRules.Key<GameRules.IntegerValue> FuseTime = GameRuleRegistry
 			.register("fuseTicksThrowTNT", GameRules.Category.MISC, GameRuleFactory.createIntRule(60));
 	@Override
 	public void onInitialize() {
