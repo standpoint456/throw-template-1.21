@@ -26,7 +26,7 @@ public class ExampleMixin {
 	@Inject(at = @At("HEAD"), method = "use")
 	private void init(World world, PlayerEntity user, Hand hand,
 					  CallbackInfoReturnable<ActionResult> cir) {
-		if(!world.isClient){
+		if(!world.isClient && world instanceof ServerWorld serverWorld){
 			if(user.getStackInHand(hand).getItem()== Items.TNT) {
 				ItemStack itemStack = user.getStackInHand(hand);
 				TntEntity tnt = new TntEntity(world, user.getX(), user.getY(), user.getZ(), user);
