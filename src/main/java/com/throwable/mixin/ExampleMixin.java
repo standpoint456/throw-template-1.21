@@ -1,5 +1,6 @@
 package com.throwable.mixin;
 
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,16 +27,17 @@ public class ExampleMixin {
 	@Inject(at = @At("HEAD"), method = "use")
 	private void init(World world, PlayerEntity user, Hand hand,
 					  CallbackInfoReturnable<ActionResult> cir) {
-		if(!world.isClient && world instanceof ServerWorld serverWorld){
-			if(user.getStackInHand(hand).getItem()== Items.TNT) {
-				ItemStack itemStack = user.getStackInHand(hand);
-				TntEntity tnt = new TntEntity(world, user.getX(), user.getY(), user.getZ(), user);
-				setVelocity(tnt, user, user.getPitch(), user.getYaw());
-				world.spawnEntity(tnt);
-				tnt.setFuse(world.getGameRules().get(FuseTime).get());
-				itemStack.decrementUnlessCreative(1, user);
-			}
-		}
+		if(!world.isClient) {
+            ServerWorld serverWorld = (ServerWorld) world;
+            if (user.getStackInHand(hand).getItem() == Items.TNT) {
+                ItemStack itemStack = user.getStackInHand(hand);
+                TntEntity tnt = new TntEntity(world, user.getX(), user.getY(), user.getZ(), user);
+                setVelocity(tnt, user, user.getPitch(), user.getYaw());
+                world.spawnEntity(tnt);
+                tnt.setFuse(((ServerWorld) world).getGameRules().get(FuseTime).get());
+                itemStack.decrementUnlessCreative(1, user);
+            }
+        }
 	}
 
 	@Unique
